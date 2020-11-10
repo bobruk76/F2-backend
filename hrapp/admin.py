@@ -1,6 +1,6 @@
 
 from django.contrib import admin
-from hrapp.models import Question, Answer
+from hrapp.models import Question, Answer, AnswerQuestion
 # Register your models here.
 
 
@@ -14,3 +14,6 @@ class CategoryAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     list_display = ('title',)
 
+@admin.register(AnswerQuestion)
+class PostAdmin(admin.ModelAdmin):
+    pass
