@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Question(models.Model):
-    title = models.TextField
+    title = models.CharField(max_length=255)
     slug = models.SlugField
     author = models.ForeignKey(User, null=True, default=None, on_delete=models.CASCADE)
 
@@ -18,7 +18,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    title = models.TextField
+    title = models.CharField(max_length=255)
     slug = models.SlugField
     question = models.ManyToManyField(Question, blank=True, related_name='answer', through='AnswerQuestion')
 
