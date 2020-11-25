@@ -23,6 +23,6 @@ from rest_framework import generics
 #     queryset = Category.objects.all()
 #     serializer_class = CategorySerializer
 
-class Questionist(generics.ListCreateAPIView):
+class QuestionList(generics.ListCreateAPIView):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
