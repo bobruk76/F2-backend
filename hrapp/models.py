@@ -13,7 +13,7 @@ class Answer(models.Model):
         verbose_name_plural = 'Ответ'
 
     def __str__(self):
-        return self.content
+        return f'{self.content}'
 
 
 class Question(models.Model):
