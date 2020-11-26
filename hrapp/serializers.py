@@ -6,7 +6,7 @@ from hrapp.models import Question
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['title']
+        fields = ['content']
 
 # from app.models import Post, Category
 # class AuthorSerializer(serializers.ModelSerializer):

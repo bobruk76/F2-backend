@@ -1,37 +1,32 @@
-from django.db import models
-
-# Create your models here.
+from djongo import models
 from django.contrib.auth.models import User
+# Create your models here.
+
+
+class Answer(models.Model):
+    content = models.CharField(max_length=255, blank=False, default='')
+    isTrue = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+        verbose_name = 'Ответ'
+        verbose_name_plural = 'Ответ'
+
+    def __str__(self):
+        return self.content
 
 
 class Question(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField
-    author = models.ForeignKey(User, null=True, default=None, on_delete=models.CASCADE)
+    content = models.CharField(max_length=255, blank=False, default='')
+    author = models.ForeignKey(User, null=True, default=None)
+    answers = models.ArrayField(
+        model_container=Answer,
+    )
 
     class Meta:
         verbose_name = 'Вопрос'
         verbose_name_plural = 'Вопрос'
 
     def __str__(self):
-        return f'{self.title}'
-
-
-class Answer(models.Model):
-    title = models.CharField(max_length=255)
-    slug = models.SlugField
-    question = models.ManyToManyField(Question, blank=True, related_name='answer', through='AnswerQuestion')
-
-    class Meta:
-        verbose_name = 'Ответ'
-        verbose_name_plural = 'Ответ'
-
-    def __str__(self):
-        return f'{self.title}'
-
-
-class AnswerQuestion(models.Model):
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question')
-    isTrue = models.BooleanField(default=False)
+        return f'{self.content}'
 

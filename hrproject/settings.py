@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +20,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(62*fd9^w%g-!4$p1)k(6r!9n^^dlh+u6jyz&np1@9wm(g&!@c'
+# SECRET_KEY = '(62*fd9^w%g-!4$p1)k(6r!9n^^dlh+u6jyz&np1@9wm(g&!@c'
+SECRET_KEY = os.urandom(32)
+DB_NAME = os.getenv('DB_NAME', 'hr_db')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,10 +78,19 @@ WSGI_APPLICATION = 'hrproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': DB_NAME,
+        'CLIENT': {
+           'host': 'localhost',
+        }
     }
 }
 
