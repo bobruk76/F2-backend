@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 
 
 class Answer(models.Model):
-    content = models.CharField(max_length=255, blank=False, default='')
-    isTrue = models.BooleanField(default=False)
+    content = models.CharField(max_length=255, blank=False, default='', verbose_name="Текст вопроса")
+    isTrue = models.BooleanField(default=False, verbose_name="Правильный ответ")
 
     class Meta:
         abstract = True
@@ -18,7 +18,6 @@ class Answer(models.Model):
 
 class Question(models.Model):
     content = models.CharField(max_length=255, blank=False, default='')
-    author = models.ForeignKey(User, null=True, default=None)
     answers = models.ArrayField(
         model_container=Answer,
     )
@@ -29,4 +28,3 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.content}'
-

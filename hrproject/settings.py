@@ -22,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = '(62*fd9^w%g-!4$p1)k(6r!9n^^dlh+u6jyz&np1@9wm(g&!@c'
 SECRET_KEY = os.urandom(32)
+DB_HOST = os.getenv('DB_HOST', '127.0.0.1')
 DB_NAME = os.getenv('DB_NAME', 'hr_db')
 
 # SECURITY WARNING: don't run with debug turned on in production!
