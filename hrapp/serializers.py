@@ -3,10 +3,11 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Question
 
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['content']
+        fields = ['content', 'answers', ]
 
 # from app.models import Post, Category
 # class AuthorSerializer(serializers.ModelSerializer):
