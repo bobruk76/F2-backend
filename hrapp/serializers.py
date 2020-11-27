@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from hrapp.models import Question
+from .models import Question
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,5 +1,5 @@
 from django.forms import forms
-from hrapp.models import Answer, Question
+from .models import Answer, Question
 
 #
 #
