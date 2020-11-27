@@ -1,8 +1,10 @@
 from django.forms import forms
-from hrapp.models import Answer
+from hrapp.models import Answer, Question
 
-
-# class AnswerForm(forms.ModelForm):
+#
+#
+# class QuestionForm(forms.Form):
 #     class Meta:
-#         model = Answer
-#         fields = ('content', 'isTrue')
+#         model = Question
+#         fields = ('content', 'answers')
+
