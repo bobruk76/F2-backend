@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': DB_NAME,
         'CLIENT': {
-           'host': 'localhost',
+           'host': DB_HOST,
         }
     }
 }
