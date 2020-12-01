@@ -10,13 +10,20 @@ class AnswerSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    answers = AnswerSerializer(many=True)
+    # answers = AnswerSerializer(many=True)
+    # answers = serializers.SerializerMethodField()
 
     class Meta:
         model = Question
-        fields = ['content', 'answers', ]
-#
+        fields = ['id', 'content', 'answers', ]
+
+
 # {
 #     "content": "Первый вопрос",
 #     "answers": [{"content": "Первый ответ", "isTrue": "True"},{"content": "Второй ответ", "isTrue": "False"}]
+# }
+#
+# {
+#     "content": "Второй вопрос",
+#     "answers": [{"content": "Первый ответ", "isTrue": "False"},{"content": "Второй ответ", "isTrue": "True"}]
 # }
