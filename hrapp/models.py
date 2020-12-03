@@ -1,8 +1,8 @@
 import uuid
 
 from djongo import models
-from django import forms
 from tinymce import models as tinymce_models
+from django import forms
 from django.contrib.auth.models import User
 # Create your models here.
 
@@ -18,7 +18,7 @@ class Answer(models.Model):
         verbose_name_plural = 'Ответ'
 
     def __str__(self):
-        return f'{self.content}'
+        return f'{self.id}'
 
 
 class AnswerForm(forms.ModelForm):
@@ -30,7 +30,6 @@ class AnswerForm(forms.ModelForm):
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     content = tinymce_models.HTMLField(verbose_name="Текст вопроса")
-    # content = models.CharField(max_length=255, verbose_name="Текст вопроса")
     answers = models.ArrayField(
         model_container=Answer,
         model_form_class=AnswerForm,
@@ -41,6 +40,25 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
     def __str__(self):
-        return f'{self.content}'
+        return f'{self.id}'
 
     objects = models.DjongoManager()
+
+
+class Questionnaire(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255, verbose_name="Название опросника")
+
+    questions = models.ArrayReferenceField(
+        to=Question,
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = 'Опросник'
+        verbose_name_plural = 'Опросник'
+
+    def __str__(self):
+        return f'{self.title}'
+
+

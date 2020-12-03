@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from .views import QuestionList
 
 from rest_framework_simplejwt.views import (
@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import (
 app_name = 'hrapp'
 
 urlpatterns = [
-    path(r'^tinymce/', include('tinymce.urls')),
+    re_path(r'^tinymce/', include('tinymce.urls')),
 
     path('admin/', admin.site.urls),
 

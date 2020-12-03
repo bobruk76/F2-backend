@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Question
+from .models import Question, Questionnaire
 from .forms import QuestionAdminForm
 
 # # Register your models here.
-admin.site.register([Question])
+admin.site.register([Question, Questionnaire])
 
 
 # @admin.register(Question)
