@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.urls import path
-from hrapp.views import QuestionList
+from django.urls import path, include
+from .views import QuestionList
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -10,6 +10,8 @@ from rest_framework_simplejwt.views import (
 app_name = 'hrapp'
 
 urlpatterns = [
+    path(r'^tinymce/', include('tinymce.urls')),
+
     path('admin/', admin.site.urls),
 
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

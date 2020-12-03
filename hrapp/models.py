@@ -2,6 +2,7 @@ import uuid
 
 from djongo import models
 from django import forms
+from tinymce import models as tinymce_models
 from django.contrib.auth.models import User
 # Create your models here.
 
@@ -28,7 +29,8 @@ class AnswerForm(forms.ModelForm):
 
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    content = models.CharField(max_length=255, verbose_name="Текст вопроса")
+    content = tinymce_models.HTMLField(verbose_name="Текст вопроса")
+    # content = models.CharField(max_length=255, verbose_name="Текст вопроса")
     answers = models.ArrayField(
         model_container=Answer,
         model_form_class=AnswerForm,
