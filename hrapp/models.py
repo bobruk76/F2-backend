@@ -62,3 +62,31 @@ class Questionnaire(models.Model):
         return f'{self.title}'
 
 
+class Result(models.Model):
+    questionnaire_id = models.UUIDField()
+    count_answers = models.IntegerField(default=0)
+    count_true_answers = models.IntegerField(default=0)
+
+    class Meta:
+        abstract = True
+
+
+class ResultForm(forms.ModelForm):
+    class Meta:
+        model = Result
+        fields = ('questionnaire_id', 'count_answers', 'count_true_answers',)
+
+
+class Testing(models.Model):
+    user_id = models.IntegerField()
+    results = models.ArrayField(
+        model_container=Result,
+        model_form_class=ResultForm,
+    )
+
+    class Meta:
+        verbose_name = 'Итоги тестирования'
+        verbose_name_plural = 'Итоги тестирования'
+
+
+
