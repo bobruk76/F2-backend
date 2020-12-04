@@ -8,5 +8,5 @@ class QuestionAdminForm(forms.Form):
 
     class Meta:
         model = Question
-        fields = ('id', 'content', 'answers')
+        fields = ('id', 'title', 'content', 'answers')
 

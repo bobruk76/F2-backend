@@ -15,7 +15,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ['id', 'content', 'answers', ]
+        fields = ['id', 'title', 'content', 'answers', ]
     
     def get_answers(self, obj):
         return_data = None
@@ -35,14 +35,3 @@ class QuestionSerializer(serializers.ModelSerializer):
                     embedded_dict.pop(key)
             return_data = embedded_dict
         return return_data
-
-
-# {
-#     "content": "Первый вопрос",
-#     "answers": [{"content": "Первый ответ", "isTrue": "True"},{"content": "Второй ответ", "isTrue": "False"}]
-# }
-#
-# {
-#     "content": "Второй вопрос",
-#     "answers": [{"content": "Первый ответ", "isTrue": "False"},{"content": "Второй ответ", "isTrue": "True"}]
-# }

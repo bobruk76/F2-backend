@@ -29,6 +29,7 @@ class AnswerForm(forms.ModelForm):
 
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255, verbose_name="Заголовок вопроса")
     content = tinymce_models.HTMLField(verbose_name="Текст вопроса")
     answers = models.ArrayField(
         model_container=Answer,
@@ -40,7 +41,7 @@ class Question(models.Model):
         verbose_name_plural = 'Вопросы'
 
     def __str__(self):
-        return f'{self.id}'
+        return f'{self.title}'
 
     objects = models.DjongoManager()
 
@@ -88,5 +89,4 @@ class Testing(models.Model):
         verbose_name = 'Итоги тестирования'
         verbose_name_plural = 'Итоги тестирования'
 
-
-
+    objects = models.DjongoManager()
