@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Question, Answer
+from .models import Question, Answer, Testing
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -35,3 +35,10 @@ class QuestionSerializer(serializers.ModelSerializer):
                     embedded_dict.pop(key)
             return_data = embedded_dict
         return return_data
+
+
+class TestingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Testing
+        fields = ['user_id', 'results', ]

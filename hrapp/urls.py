@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
-from .views import QuestionList
+from .views import QuestionView, TestingView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -17,6 +17,9 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
-    path('api/question/', QuestionList.as_view(), name='question-list'),
+    path('api/question/', QuestionView.as_view(), name='questions'),
+
+    path('api/results/', TestingView.as_view(), name='results'),
+    path('api/results/<int:pk>', TestingView.as_view(), name='results'),
 
 ]

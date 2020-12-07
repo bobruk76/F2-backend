@@ -79,7 +79,7 @@ class ResultForm(forms.ModelForm):
 
 
 class Testing(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.IntegerField(primary_key=True, editable=False)
     results = models.ArrayField(
         model_container=Result,
         model_form_class=ResultForm,
