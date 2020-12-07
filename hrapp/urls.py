@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
-from .views import QuestionView, TestingView
+from .views import QuestionView, TestingView, QuestionnaireView
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -18,6 +18,8 @@ urlpatterns = [
     path('api/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('api/question/', QuestionView.as_view(), name='questions'),
+
+    path('api/questionnaire/', QuestionnaireView.as_view(), name='questionnaires'),
 
     path('api/results/', TestingView.as_view(), name='results'),
     path('api/results/<int:pk>', TestingView.as_view(), name='results'),

@@ -62,6 +62,8 @@ class Questionnaire(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+    objects = models.DjongoManager()
+
 
 class Result(models.Model):
     questionnaire_id = models.UUIDField()
