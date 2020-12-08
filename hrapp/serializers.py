@@ -1,16 +1,17 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework.fields import SerializerMethodField
+
 from .models import Question, Answer, Testing, Questionnaire
 
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['content', 'isTrue', ]
+        fields = '__all__'
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    # answers = AnswerSerializer(many=True)
     answers = serializers.SerializerMethodField()
 
     class Meta:
@@ -38,9 +39,11 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class QuestionnaireSerializer(serializers.ModelSerializer):
+    questions = QuestionSerializer(many=True, read_only=True)
+
     class Meta:
         model = Questionnaire
-        fields = ['id', 'title', ]
+        fields = '__all__'
 
 
 class TestingSerializer(serializers.ModelSerializer):
