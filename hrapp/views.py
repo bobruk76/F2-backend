@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.utils import json
 
 from .models import Question, Questionnaire
-from .serializers import QuestionSerializer, QuestionnaireSerializer
+from .serializers import QuestionSerializer, QuestionnaireSerializer, QuestionnaireListSerializer
 from rest_framework import generics, status
 from rest_framework.views import APIView
 
@@ -21,9 +21,8 @@ class QuestionView(generics.ListCreateAPIView):
 
 
 class QuestionnaireList(generics.ListAPIView):
-    print('list')
     queryset = Questionnaire.objects.all()
-    serializer_class = QuestionnaireSerializer
+    serializer_class = QuestionnaireListSerializer
 
 
 class QuestionnaireView(APIView):
@@ -35,9 +34,9 @@ class QuestionnaireView(APIView):
             raise Http404
 
     def get(self, request, pk, format=None):
-        print(pk)
         questionnaire = self.get_object(pk)
         serializer = QuestionnaireSerializer(questionnaire)
+
         return Response(serializer.data)
 
 
@@ -45,6 +44,7 @@ class QuestionnaireView(APIView):
 def questionnaire_detail(request, pk):
     try:
         questionnaire = Questionnaire.objects.get(id=pk)
+        print(questionnaire.correct_answers_list)
         serializer = QuestionnaireSerializer(questionnaire)
         return Response(serializer.data)
     except:
@@ -54,6 +54,9 @@ def questionnaire_detail(request, pk):
 class TestingView(APIView):
     def post(self, request):
         user = request.user
+        questionnaire = Questionnaire(request.questionnaire_id)
+        true_answers = [item.id for item in questionnaire.questions]
+        print(true_answers)
 
         result = request.data.get("answers")
         answers = json.loads(result)

@@ -38,6 +38,11 @@ class QuestionSerializer(serializers.ModelSerializer):
         return return_data
 
 
+class QuestionnaireListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Questionnaire
+        fields = ['id', 'title', ]
+
 class QuestionnaireSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
 
