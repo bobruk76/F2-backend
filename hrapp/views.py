@@ -55,8 +55,9 @@ def questionnaire_detail(request, pk):
 class TestingView(APIView):
     def post(self, request):
         # result = Result()
-        user = request.user
-        testing = Testing.objects.get_or_create(id=user_id)
+        user = User.objects.get(usermane=request.user)
+
+        testing = Testing.objects.get_or_create(id=user.id)
         result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
 
         answers = set(request.data.get("answers"))
