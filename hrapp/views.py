@@ -1,3 +1,5 @@
+from uuid import UUID
+
 import jwt
 from django.conf.global_settings import SECRET_KEY
 from django.contrib.auth.models import User
@@ -7,10 +9,10 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.utils import json
 
-from .models import Question, Questionnaire
-from .serializers import QuestionSerializer, QuestionnaireSerializer, QuestionnaireListSerializer
+from .models import Question, Questionnaire, Result, Testing
+from .serializers import QuestionSerializer, QuestionnaireSerializer, QuestionnaireListSerializer, ResultSerializer, \
+    TestingSerializer
 from rest_framework import generics, status
 from rest_framework.views import APIView
 
@@ -52,16 +54,31 @@ def questionnaire_detail(request, pk):
 
 class TestingView(APIView):
     def post(self, request):
+        # result = Result()
         user = request.user
-        result = request.data.get("answers")
-        _id = request.data.get("questionnaireid")
+        testing = Testing.objects.get_or_create(id=user_id)
+        result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
 
-        questionnaire = Questionnaire.objects.get(id=_id)
-        print(questionnaire.title)
-        true_answers = [item.id for item in questionnaire.questions.all()]
-        print(true_answers)
+        answers = set(request.data.get("answers"))
+        result.count_answers = len(answers)
 
+        questionnaire = Questionnaire.objects.get(id=result.questionnaire_id)
+        questions_ids = [item.id for item in questionnaire.questions.all()]
 
+        true_answers = set()
+        result.count_questionnaire_answers = 0
+        result.count_questionnaire_true_answers = 0
 
+        for _id in questions_ids:
+            question = Question.objects.get(id=_id)
+            for answer in question.answers:
+                result.count_questionnaire_answers += 1
+                if answer.isTrue:
+                    result.count_questionnaire_true_answers += 1
+                    true_answers.add(answer.id)
 
-        return Response({"success": "Request created successfully"})
+        result.count_correct_answers = len(answers & true_answers)
+        testing.save()
+
+        serializer = TestingSerializer(result)
+        return Response(serializer.data)

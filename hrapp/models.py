@@ -67,8 +67,11 @@ class Questionnaire(models.Model):
 
 class Result(models.Model):
     questionnaire_id = models.UUIDField()
+    count_questionnaire_answers = models.IntegerField(default=0)
+    count_questionnaire_true_answers = models.IntegerField(default=0)
+
+    count_correct_answers = models.IntegerField(default=0)
     count_answers = models.IntegerField(default=0)
-    count_true_answers = models.IntegerField(default=0)
 
     class Meta:
         abstract = True
@@ -77,7 +80,7 @@ class Result(models.Model):
 class ResultForm(forms.ModelForm):
     class Meta:
         model = Result
-        fields = ('questionnaire_id', 'count_answers', 'count_true_answers',)
+        fields = '__all__'
 
 
 class Testing(models.Model):

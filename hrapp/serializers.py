@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.fields import SerializerMethodField
 
-from .models import Question, Answer, Testing, Questionnaire
+from .models import Question, Answer, Testing, Questionnaire, Result
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -52,8 +52,35 @@ class QuestionnaireSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'questions', ]
 
 
+class ResultSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Result
+        fields = '__all__'
+
+
 class TestingSerializer(serializers.ModelSerializer):
+    results = serializers.SerializerMethodField()
 
     class Meta:
         model = Testing
         fields = ['user_id', 'results', ]
+
+    def get_results(self, obj):
+        return_data = None
+        if type(obj.results) == list:
+            embedded_list = []
+            for item in obj.results:
+                embedded_dict = item.__dict__
+                for key in list(embedded_dict.keys()):
+                    if key.startswith('_'):
+                        embedded_dict.pop(key)
+                embedded_list.append(embedded_dict)
+            return_data = embedded_list
+        else:
+            embedded_dict = obj.results.__dict__
+            for key in list(embedded_dict.keys()):
+                if key.startswith('_'):
+                    embedded_dict.pop(key)
+            return_data = embedded_dict
+        return return_data
