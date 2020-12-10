@@ -44,7 +44,6 @@ class QuestionnaireView(APIView):
 def questionnaire_detail(request, pk):
     try:
         questionnaire = Questionnaire.objects.get(id=pk)
-        print(questionnaire.correct_answers_list)
         serializer = QuestionnaireSerializer(questionnaire)
         return Response(serializer.data)
     except:
@@ -54,11 +53,15 @@ def questionnaire_detail(request, pk):
 class TestingView(APIView):
     def post(self, request):
         user = request.user
-        questionnaire = Questionnaire(request.questionnaire_id)
-        true_answers = [item.id for item in questionnaire.questions]
+        result = request.data.get("answers")
+        _id = request.data.get("questionnaireid")
+
+        questionnaire = Questionnaire.objects.get(id=_id)
+        print(questionnaire.title)
+        true_answers = [item.id for item in questionnaire.questions.all()]
         print(true_answers)
 
-        result = request.data.get("answers")
-        answers = json.loads(result)
+
+
 
         return Response({"success": "Request created successfully"})

@@ -43,12 +43,13 @@ class QuestionnaireListSerializer(serializers.ModelSerializer):
         model = Questionnaire
         fields = ['id', 'title', ]
 
+
 class QuestionnaireSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
 
     class Meta:
         model = Questionnaire
-        fields = '__all__'
+        fields = ['id', 'title', 'questions', ]
 
 
 class TestingSerializer(serializers.ModelSerializer):
