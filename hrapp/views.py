@@ -1,6 +1,6 @@
 from uuid import UUID
-
 import jwt
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf.global_settings import SECRET_KEY
 from django.contrib.auth.models import User
 from django.http import JsonResponse, Http404
@@ -53,12 +53,26 @@ def questionnaire_detail(request, pk):
 
 
 class TestingView(APIView):
+    @staticmethod
+    def get_user(request):
+        jwt_object = JWTAuthentication()
+        header = jwt_object.get_header(request)
+        raw_token = jwt_object.get_raw_token(header)
+        validated_token = jwt_object.get_validated_token(raw_token)
+        user = jwt_object.get_user(validated_token)
+        return user
+
     def post(self, request):
         # result = Result()
-        user = User.objects.get(usermane=request.user)
 
-        testing = Testing.objects.get_or_create(id=user.id)
-        result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
+        user = self.get_user(request)
+
+        testing = Testing.objects.get_or_create(username=user)
+
+
+        # result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
+        result = Result()
+        result.questionnaire_id = request.data.get("questionnaireid")
 
         answers = set(request.data.get("answers"))
         result.count_answers = len(answers)
@@ -79,7 +93,10 @@ class TestingView(APIView):
                     true_answers.add(answer.id)
 
         result.count_correct_answers = len(answers & true_answers)
+
+        testing.results.add(result)
         testing.save()
 
         serializer = TestingSerializer(result)
         return Response(serializer.data)
+

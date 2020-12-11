@@ -29,8 +29,8 @@ class AnswerForm(forms.ModelForm):
 
 class Question(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255, verbose_name="Заголовок вопроса")
-    content = tinymce_models.HTMLField(verbose_name="Текст вопроса")
+    title = models.CharField(max_length=255, default='', verbose_name="Заголовок вопроса")
+    content = tinymce_models.HTMLField(default='', verbose_name="Текст вопроса")
     answers = models.ArrayField(
         model_container=Answer,
         model_form_class=AnswerForm,
@@ -48,7 +48,7 @@ class Question(models.Model):
 
 class Questionnaire(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField(max_length=255, verbose_name="Название опросника")
+    title = models.CharField(max_length=255,  default='', verbose_name="Название опросника")
 
     questions = models.ArrayReferenceField(
         to=Question,
@@ -84,7 +84,7 @@ class ResultForm(forms.ModelForm):
 
 
 class Testing(models.Model):
-    user_id = models.IntegerField(primary_key=True, editable=False)
+    username = models.CharField(max_length=255, primary_key=True, editable=False)
     results = models.ArrayField(
         model_container=Result,
         model_form_class=ResultForm,
