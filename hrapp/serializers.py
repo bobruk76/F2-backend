@@ -64,7 +64,7 @@ class TestingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Testing
-        fields = ['user_id', 'results', ]
+        fields = ['username', 'results', ]
 
     def get_results(self, obj):
         return_data = None

@@ -67,7 +67,7 @@ class TestingView(APIView):
 
         user = self.get_user(request)
 
-        testing = Testing.objects.get_or_create(username=user)
+
 
 
         # result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
@@ -94,9 +94,13 @@ class TestingView(APIView):
 
         result.count_correct_answers = len(answers & true_answers)
 
-        testing.results.add(result)
-        testing.save()
+        # testing = Testing.objects.get_or_create(username=user)
+        # testing.results.add(result)
+        # testing.save()
+        testing = Testing.objects.mongo_find_one_and_update({"username": user.username},
+                                                            {"$set": {"results": [result.__dict__]}})
+        # serializer = TestingSerializer(testing)
+        # return Response(serializer.data)
 
-        serializer = TestingSerializer(result)
-        return Response(serializer.data)
+        return Response({})
 
