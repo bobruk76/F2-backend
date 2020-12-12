@@ -1,5 +1,3 @@
-from uuid import UUID
-import jwt
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf.global_settings import SECRET_KEY
 from django.contrib.auth.models import User
@@ -97,10 +95,10 @@ class TestingView(APIView):
         # testing = Testing.objects.get_or_create(username=user)
         # testing.results.add(result)
         # testing.save()
-        testing = Testing.objects.mongo_find_one_and_update({"username": user.username},
-                                                            {"$set": {"results": [result.__dict__]}})
+        testing = Testing.objects.mongo_update({"username": user.username},
+                                               {"$set": {"results": []}},
+                                               True)
         # serializer = TestingSerializer(testing)
         # return Response(serializer.data)
 
         return Response({})
-
