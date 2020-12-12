@@ -69,36 +69,39 @@ class TestingView(APIView):
 
 
         # result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
-        result = Result()
-        result.questionnaire_id = request.data.get("questionnaireid")
+        result = dict()
+        result['questionnaire_id'] = request.data.get("questionnaireid")
 
-        answers = set(request.data.get("answers"))
-        result.count_answers = len(answers)
+        answers = request.data.get("answers")
 
-        questionnaire = Questionnaire.objects.get(id=result.questionnaire_id)
+        print(answers)
+
+        result['count_answers'] = len(answers)
+
+        questionnaire = Questionnaire.objects.get(id=result['questionnaire_id'])
         questions_ids = [item.id for item in questionnaire.questions.all()]
 
         true_answers = set()
-        result.count_questionnaire_answers = 0
-        result.count_questionnaire_true_answers = 0
+        result['count_questionnaire_answers'] = 0
+        result['count_questionnaire_true_answers'] = 0
 
         for _id in questions_ids:
             question = Question.objects.get(id=_id)
             for answer in question.answers:
-                result.count_questionnaire_answers += 1
+                result['count_questionnaire_answers'] += 1
                 if answer.isTrue:
-                    result.count_questionnaire_true_answers += 1
+                    result['count_questionnaire_true_answers'] += 1
                     true_answers.add(answer.id)
 
-        result.count_correct_answers = len(answers & true_answers)
+        result['count_correct_answers'] = len(answers & true_answers)
 
         # testing = Testing.objects.get_or_create(username=user)
         # testing.results.add(result)
         # testing.save()
         testing = Testing.objects.mongo_update({"username": user.username},
-                                               {"$set": {"results": []}},
+                                               {"$set": {"results": [result, ]}},
                                                True)
         # serializer = TestingSerializer(testing)
         # return Response(serializer.data)
 
-        return Response({})
+        return Response(result)
