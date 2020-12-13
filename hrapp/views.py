@@ -97,9 +97,13 @@ class TestingView(APIView):
         # testing = Testing.objects.get_or_create(username=user)
         # testing.results.add(result)
         # testing.save()
-        testing = Testing.objects.mongo_update({"username": user.username},
-                                               {"$set": {"results": [result, ]}},
-                                               True)
+
+        Testing.objects.mongo_update({"username": user.username},
+                                     {"$pull": {"results": {"results.questionnaire_id": result['questionnaire_id']}}})
+
+        Testing.objects.mongo_update({"username": user.username},
+                                     {"$addToSet": {"results": result}},
+                                     True)
         # serializer = TestingSerializer(testing)
         # return Response(serializer.data)
 
