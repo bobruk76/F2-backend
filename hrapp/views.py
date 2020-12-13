@@ -64,16 +64,12 @@ class TestingView(APIView):
         return user
 
     def post(self, request):
-        # result = Result()
-
         user = self.get_user(request)
 
         result = dict()
         result['questionnaire_id'] = uuid.UUID(request.data.get("questionnaireid"))
 
         answers = [uuid.UUID(item) for item in json.loads(request.data.get("answers"))]
-        # answers = request.POST.getlist('answers')
-        print(answers)
 
         result['count_answers'] = len(answers)
 
@@ -109,3 +105,17 @@ class TestingView(APIView):
         # return Response(serializer.data)
 
         return Response(result)
+
+    @staticmethod
+    def get_object(username):
+        try:
+            return Testing.objects.get(username=username)
+        except:
+            raise Http404
+
+    def get(self, request, format=None):
+        user = self.get_user(request)
+        testing = self.get_object(user.username)
+        serializer = TestingSerializer(testing)
+
+        return Response(serializer.data)

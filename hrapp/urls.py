@@ -23,6 +23,5 @@ urlpatterns = [
     path('api/questionnaire/<uuid:pk>', questionnaire_detail, name='questionnaires_view'),
 
     path('api/results/', TestingView.as_view(), name='results'),
-    path('api/results/<int:pk>', TestingView.as_view(), name='results'),
 
 ]
