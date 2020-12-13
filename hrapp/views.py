@@ -1,3 +1,6 @@
+import uuid
+
+from rest_framework.utils import json
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf.global_settings import SECRET_KEY
 from django.contrib.auth.models import User
@@ -65,15 +68,11 @@ class TestingView(APIView):
 
         user = self.get_user(request)
 
-
-
-
-        # result = testing.results.get_or_create(questionnaire_id=request.data.get("questionnaireid"))
         result = dict()
-        result['questionnaire_id'] = request.data.get("questionnaireid")
+        result['questionnaire_id'] = uuid.UUID(request.data.get("questionnaireid"))
 
-        answers = request.data.get("answers")
-
+        answers = [uuid.UUID(item) for item in json.loads(request.data.get("answers"))]
+        # answers = request.POST.getlist('answers')
         print(answers)
 
         result['count_answers'] = len(answers)
@@ -93,7 +92,7 @@ class TestingView(APIView):
                     result['count_questionnaire_true_answers'] += 1
                     true_answers.add(answer.id)
 
-        result['count_correct_answers'] = len(answers & true_answers)
+        result['count_correct_answers'] = len(set(answers) & true_answers)
 
         # testing = Testing.objects.get_or_create(username=user)
         # testing.results.add(result)
