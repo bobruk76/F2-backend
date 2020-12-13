@@ -93,13 +93,14 @@ class TestingView(APIView):
                     true_answers.add(answer.id)
 
         result['count_correct_answers'] = len(set(answers) & true_answers)
-
+        result['count_incorrect_answers'] = result['count_answers'] - result['count_correct_answers']
         # testing = Testing.objects.get_or_create(username=user)
         # testing.results.add(result)
         # testing.save()
 
         Testing.objects.mongo_update({"username": user.username},
-                                     {"$pull": {"results": {"results.questionnaire_id": result['questionnaire_id']}}})
+                                     {"$pull": {"results": {"questionnaire_id": result["questionnaire_id"]}}},
+                                     True)
 
         Testing.objects.mongo_update({"username": user.username},
                                      {"$addToSet": {"results": result}},
