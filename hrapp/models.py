@@ -72,6 +72,7 @@ class Result(models.Model):
 
     count_correct_answers = models.IntegerField(default=0)
     count_answers = models.IntegerField(default=0)
+    count_incorrect_answers = models.IntegerField(default=0)
 
     class Meta:
         abstract = True

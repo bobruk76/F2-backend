@@ -1,3 +1,5 @@
+import uuid
+
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.fields import SerializerMethodField
@@ -83,4 +85,7 @@ class TestingSerializer(serializers.ModelSerializer):
                 if key.startswith('_'):
                     embedded_dict.pop(key)
             return_data = embedded_dict
+        for item in return_data:
+            item['title'] = Questionnaire.objects.get(id=item['questionnaire_id']).title
+
         return return_data
